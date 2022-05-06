@@ -5,7 +5,7 @@ using Data.Data;
 using Core.Helpers;
 using Core.Models;
 
-//var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<StayContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("StayContext")));
