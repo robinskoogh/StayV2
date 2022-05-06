@@ -9,12 +9,12 @@ namespace Data.Data
 {
     public class StayContext : IdentityDbContext<User>
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<RealEstateObject> RealEstateObjects { get; set; }
-        public DbSet<RealtorRequest> RealtorRequests { get; set; }
-        public DbSet<RealEstateObjectViewModel> RealEstateObjectViewmodel { get; set; }
-        public DbSet<Image> Images { get; set; }
-        public DbSet<RealtorFirm> RealtorFirms { get; set; }
+        public DbSet<User> Users => Set<User>();
+        public DbSet<RealEstateObject> RealEstateObjects => Set<RealEstateObject>();
+        public DbSet<RealtorRequest> RealtorRequests => Set<RealtorRequest>();
+        public DbSet<RealEstateObjectViewModel> RealEstateObjectViewmodel => Set<RealEstateObjectViewModel>();
+        public DbSet<Image> Images => Set<Image>();
+        public DbSet<RealtorFirm> RealtorFirms => Set<RealtorFirm>();
 
         public StayContext(DbContextOptions<StayContext> options)
             : base(options)

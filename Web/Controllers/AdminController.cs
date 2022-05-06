@@ -40,7 +40,7 @@ namespace Web.Controllers
             return View(await context.RealtorFirms.ToListAsync());
         }
 
-        //-----------------------ROLE MANAGER-------------------------------
+        #region Role Management
         [HttpGet]
         public IActionResult CreateRole()
         {
@@ -253,8 +253,9 @@ namespace Web.Controllers
             }
             return RedirectToAction("EditRole", new { Id = roleId });
         }
+        #endregion
 
-        //-----------------------------------REALTOR REQUESTS-------------------------------------------
+        #region Realtor Requests
         [HttpGet]
         public async Task<IActionResult> ListRealtorRequests(List<RealtorRequestViewModel> model)
         {
@@ -394,6 +395,7 @@ namespace Web.Controllers
                 return RedirectToAction("Index", "Profile");
             }
         }
+        #endregion
 
         public async Task SendEmailConfirmation(User user, string subject, string message, string roleName)
         {

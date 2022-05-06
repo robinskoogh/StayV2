@@ -7,19 +7,19 @@ namespace Core.Models
     public class User : IdentityUser
     {
         [Display(Name = "Förnamn")]
-        public string FirstName { get; set; } = string.Empty;
+        public string? FirstName { get; set; }
 
         [Display(Name = "Efternamn")]
-        public string LastName { get; set; } = string.Empty;
+        public string? LastName { get; set; }
 
         [Display(Name = "Adress")]
-        public string Address { get; set; } = string.Empty;
+        public string? Address { get; set; }
 
         [Display(Name = "Postnummer")]
         public int ZipCode { get; set; }
 
         [Display(Name = "Stad")]
-        public string City { get; set; } = string.Empty;
+        public string? City { get; set; }
 
         [PersonalData]
         [DataType(DataType.Date)]

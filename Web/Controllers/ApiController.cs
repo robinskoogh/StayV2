@@ -22,7 +22,7 @@ namespace Web.Controllers
             _userManager = userManager;
         }
 
-        //--------------------------------------REAL ESTATE OBJECTS---------------------------//
+        #region Real Estate Objects
         [Route("realestate")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RealEstateObject>>> GetRealEstateObjects()
@@ -43,8 +43,9 @@ namespace Web.Controllers
 
             return realEstateObject;
         }
+        #endregion
 
-        //--------------------------------------USERS---------------------------//
+        #region Users
         [Route("user")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
@@ -74,6 +75,7 @@ namespace Web.Controllers
 
             return userDTO;
         }
+        #endregion
 
         #region Realtors
         [Route("realtor")]

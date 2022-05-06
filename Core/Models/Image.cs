@@ -9,7 +9,7 @@ namespace Core.Models
         public RealEstateObject RealEstateObject { get; set; }
 
         [Key, Column(Order = 1)]
-        public string FileName { get; set; }
+        public string? FileName { get; set; }
 
         public Image()
         {

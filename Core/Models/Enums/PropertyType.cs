@@ -1,7 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Resources;
-using System.Security.AccessControl;
-using System.Xml.Linq;
 
 namespace Core.Models.Enums
 {

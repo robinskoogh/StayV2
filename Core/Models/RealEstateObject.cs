@@ -9,19 +9,19 @@ namespace Core.Models
         public int Id { get; set; }
 
         [Display(Name = "Adress")]
-        public string Address { get; set; } = string.Empty;
+        public string? Address { get; set; }
 
         [Display(Name = "Postnummer")]
         public int ZipCode { get; set; }
 
         [Display(Name = "Stad")]
-        public string City { get; set; } = string.Empty;
+        public string? City { get; set; }
 
         [Display(Name = "Pris")]
         public int Price { get; set; }
 
         [Display(Name = "Beskrivning")]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; }
 
         [Display(Name = "Bostadstyp")]
         public PropertyType PropType { get; set; }
@@ -68,8 +68,8 @@ namespace Core.Models
         [Display(Name = "Latitud")]
         public double Latitude { get; set; }
 
-        public string Sublocality { get; set; } = string.Empty;
-        public string PostalTown { get; set; } = string.Empty;
+        public string? Sublocality { get; set; }
+        public string? PostalTown { get; set; }
 
         public int NrOfViews { get; set; }
 

@@ -38,7 +38,7 @@ namespace Web.Controllers
             return View(reo);
         }
 
-        public async Task<IActionResult> MyFavourites()
+        public IActionResult MyFavourites()
         {
             var id = _userManager.GetUserId(User);
             User user = _dbContext.Users.Where(user => user.Id == id).Include(user => user.Favorites).FirstOrDefault();
