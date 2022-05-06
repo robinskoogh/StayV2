@@ -30,7 +30,6 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
-//builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
