@@ -5,7 +5,7 @@ using Data.Data;
 using Core.Helpers;
 using Core.Models;
 
-var builder = WebApplication.CreateBuilder(args);
+//var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<StayContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("StayContext")));
@@ -30,7 +30,6 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
-//builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
