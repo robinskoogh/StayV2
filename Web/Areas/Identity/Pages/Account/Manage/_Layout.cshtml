@@ -1,0 +1,39 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout;
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+
+<div class="text-center mt-4">
+    <form class="row" id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <div class="btn-group" role="group" aria-label="Selection menu">
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Profile" asp-action="MyResidence"><i class="fa-solid fa-house-chimney"></i> Min Bostad</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Profile" asp-action="MyFavourites"><i class="fa-solid fa-magnifying-glass"></i> Mina Bevakningar</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link active" asp-controller="Profile" asp-action="Index"><i class="fa-solid fa-address-card"></i> Kontouppgifter</a>
+
+            <button id="logout" type="submit" class="btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Logga ut</button>
+        </div>
+    </form>
+</div>
+
+<div>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <partial name="_ManageNav" />
+        </div>
+        <div class="col-md-9">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

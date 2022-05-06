@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Core.Models
+
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+    <li class="nav-item dropdown" style="z-index:9999">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="dropdownProfileBtn" role="button" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">
+            Min profil
+        </a>
+        <div class="dropdown-menu">
+            <a id="myResidence" class="dropdown-item" asp-controller="Profile" asp-action="MyResidence" title="Bostad"><i class="fa-solid fa-house-chimney"></i> Min bostad</a>
+            <a id="myFavourites" class="dropdown-item" asp-controller="Profile" asp-action="MyFavourites" title="Favoriter"><i class="fa-solid fa-magnifying-glass"></i> Mina bevakningar</a>
+            <a id="myProfile" class="dropdown-item" asp-controller="Profile" asp-action="Index" title="Profil"><i class="fa-solid fa-address-card"></i> Kontouppgifter</a>
+            <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fa-solid fa-gear"></i> Hantera konto</a>
+            <div class="dropdown-divider"></div>
+            @*@if (User.IsInRole("Mäklare"))
+                {*@
+                <a id="realtor" class="dropdown-item" asp-controller="Realtor" asp-action="Index" title="Mäklarsida"><i class="fa-solid fa-briefcase"></i> Mäklarsidan</a>
+            @*}*@
+            <div class="dropdown-divider"></div>
+            @*@if (User.IsInRole("Admin"))
+                {*@
+                <a class="dropdown-item" asp-action="Dashboard" asp-controller="Admin"> <i class="fa-solid fa-user-shield"></i> Adminpanel</a>
+            @*}*@
+            <div class="dropdown-divider"></div>
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logga ut</button>
+            </form>
+        </div>
+    </li>
+}
+else
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="dropdownProfileBtn" role="button" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">
+            Användare
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownProfileBtn">
+            <a class="dropdown-item" id="login" asp-area="Identity" asp-page="/Account/Login"><i class="fa-solid fa-right-to-bracket"></i> Logga in</a>
+            <a class="dropdown-item" id="register" asp-area="Identity" asp-page="/Account/Register"><i class="fa-solid fa-user"></i> Skapa konto</a>
+        </div>
+    </li>
+}

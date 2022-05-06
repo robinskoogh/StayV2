@@ -1,0 +1,171 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Web.ViewModels
+@model RealEstateObjectViewModel
+
+@{
+
+}
+
+@*----NAV BAR----*@
+<div class="text-center mt-4">
+    <form class="row" id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <div class="btn-group" role="group" aria-label="Selection menu">
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Profile" asp-action="MyResidence"><i class="fa-solid fa-house-chimney"></i> Min Bostad</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link active" asp-controller="Profile" asp-action="MyFavourites"><i class="fa-solid fa-magnifying-glass"></i> Mina Bevakningar</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Profile" asp-action="Index"><i class="fa-solid fa-address-card"></i> Kontouppgifter</a>
+
+            <button id="logout" type="submit" class="col-1 btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Logga ut</button>
+        </div>
+    </form>
+</div>
+
+<div class="text-center mt-2 row">
+    <div class="btn-group" role="group" aria-label="Selection menu">
+        <a class="col-1 btn btn-outline-info clean-link" asp-controller="Profile" asp-action="MyFavourites"><i class="fa-solid fa-star"></i> Favoriter</a>
+
+        <a class="col-1 btn btn-outline-info clean-link active" asp-controller="Profile" asp-action="MyPreferences"><i class="fa-solid fa-gear"></i> Sökpreferenser</a>
+
+        <a class="col-1 btn btn-outline-info clean-link" href="#"><i class="fa-solid fa-binoculars"></i> Bevakade områden</a>
+
+        <a class="col-1 btn btn-outline-info clean-link" asp-controller="Profile" asp-action="MySearchHistory"><i class="fa-solid fa-magnifying-glass"></i> Sökhistorik</a>
+    </div>
+</div>
+
+@*----MAIN PAGE----*@
+<label class="form-label"></label>
+<form asp-controller="Home" asp-action="SearchResult" class="row mb-5">
+    <div class="container border col-6 p-3 mx-auto">
+        <div class="border-1 mx-auto">
+            <div class="form-floating">
+                <input asp-for="SearchString" class="form-control" id="filterSearchAddress" placeholder="Område - Adress - Kommun" />
+                <label for="filterSearchAddress">Område - Adress - Kommun</label>
+            </div>
+        </div>
+        <div class="my-3">
+            Sökområde
+            <div class="col-6 ps-0">
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>+0 km</option>
+                    @for (var i = 10; i <= 50; i += 10)
+                    {
+                        <option value="@i">+@i km</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="my-3">
+            Filtrera kategorier
+            <div>
+                @*<input type="checkbox" class="btn-check" id="btn-check-all" checked autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="btn-check-all">Alla kategorier</label>*@
+
+                <input asp-for="HouseCheckBox" type="checkbox" class="btn-check" id="btn-check-house" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-house"><i class="fa-solid fa-house"></i> Villor</label>
+
+                <input asp-for="RowHouseCheckBox" type="checkbox" class="btn-check" id="btn-check-townhouse" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-townhouse"><img src="~/images/resources/town-house-icon.png" /> Radhus</label>
+
+                <input asp-for="ApartmentCheckbox" type="checkbox" class="btn-check" id="btn-check-apt" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-apt"><i class="fa-solid fa-building"></i> Lägenheter</label>
+
+                <input asp-for="HolidayHomeCheckBox" type="checkbox" class="btn-check" id="btn-check-holhome" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-holhome"><i class="fa-solid fa-caravan"></i> Fritidshus</label>
+
+
+            </div>
+            <div class="my-2">
+                <input asp-for="LotCheckBox" type="checkbox" class="btn-check" id="btn-check-plot" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-plot"><img src="~/images/resources/property-area-icon.png" /> Tomter</label>
+
+                <input asp-for="FarmCheckBox" type="checkbox" class="btn-check" id="btn-check-farmstead" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-farmstead"><i class="fa-solid fa-tractor"></i> Gårdar/Skog</label>
+
+                <input asp-for="OtherCheckBox" type="checkbox" class="btn-check" id="btn-check-misc" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-misc"><i class="fa-brands fa-square-font-awesome-stroke"></i> Övrigt</label>
+            </div>
+        </div>
+        <div class="my-3 row justify-content-between">
+            <div class="col mx-auto">
+                <label class="" for="minRoomsSelect">Antal rum</label>
+                <select asp-for="MinRooms" class="form-select" id="minRoomsSelect" aria-label="Number of rooms select">
+                    <option value="" selected>Alla</option>
+                    @for (var i = 1; i <= 10; i++)
+                    {
+                        <option value="@i">@i rum</option>
+                    }
+                    <option value="-1">>10 rum</option>
+                </select>
+            </div>
+            <div class="col mx-auto">
+                <label class="" for="livingAreaSelect">Boarea (m²)</label>
+                <select asp-for="MinLivingArea" class="form-select" id="livingAreaSelect" aria-label="Living area select">
+                    <option value="" selected>Alla</option>
+                    @for (var i = 20; i <= 200; i += 20)
+                    {
+                        <option value="@i">@i m²</option>
+                    }
+                    <option value="-1">>200 m²</option>
+                </select>
+            </div>
+            <div class="col mx-auto">
+                <label class="" for="propAreaSelect">Tomtarea (m²)</label>
+                <select asp-for="PlotSize" class="form-select" id="propAreaSelect" aria-label="Property area select">
+                    <option value="" selected>Alla</option>
+                    @for (var i = 50; i <= 250; i += 50)
+                    {
+                        <option value="@i">@i m²</option>
+                    }
+                    @for (var i = 300; i <= 1000; i += 100)
+                    {
+                        <option value="@i">@i m²</option>
+                    }
+                    <option value="-1">>1000 m²</option>
+                </select>
+            </div>
+        </div>
+        <div class="my-3 row justify-content-between">
+            <div class="col mx-auto">
+                <label class="" for="maxPriceSelect">Max pris</label>
+                <select asp-for="MaxPrice" class="form-select" id="maxPriceSelect" aria-label="Maximum price select">
+                    <option value="" selected>Inget</option>
+                    @for (var i = 100000; i < 500000; i += 100000)
+                    {
+                        <option value="@i">@i.ToString("N0") kr</option>
+                    }
+                    @for (var i = 500000; i <= 3000000; i += 500000)
+                    {
+                        <option value="@i">@i.ToString("N0") kr</option>
+                    }
+                    @for (var i = 3000000; i <= 10000000; i += 1000000)
+                    {
+                        <option value="@i">@i.ToString("N0") kr</option>
+                    }
+                </select>
+            </div>
+            <div class="col mx-auto">
+                <label class="" for="newProductionSelect">Nyproduktion</label>
+                <select asp-for="NewConstruction" class="form-select" id="newProductionSelect" aria-label="Show new production select">
+                    <option value="-1" selected>Alla</option>
+                    <option value="1">Enbart nyproduktion</option>
+                    <option value="0">Dölj Nyproduktion</option>
+                </select>
+            </div>
+            <div class="col mx-auto">
+                <label class="" for="balconySelect">Balkong</label>
+                <select asp-for="Balcony" class="form-select" id="balconySelect" aria-label="Balcony select">
+                    <option value="-1" selected>Alla</option>
+                    <option value="1">Visa enbart objekt med Balkong</option>
+                    <option value="0">Dölj objekt med Balkong</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-floating col-6 ps-0">
+            <textarea asp-for="DescriptionString" class="form-control" id="filterTextSearch" cols=40 rows=10 placeholder="Ex. Kakelugn, Fiber, etc"></textarea>
+            <label for="filterTextSearch">Ex. Kakelugn, Fiber, etc</label>
+        </div>
+
+        <button id="saveBtn" type="submit" class="btn btn-success col-12 mt-3" title="Sök">Spara</button>
+    </div>
+</form>

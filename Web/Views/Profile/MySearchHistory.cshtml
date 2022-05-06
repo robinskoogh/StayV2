@@ -1,0 +1,167 @@
+﻿@using Web.ViewModels;
+@using Core.Models;
+@model IEnumerable<RealEstateObjectViewModel>;
+@{
+    ViewData["Title"] = "Sökhistorik";
+}
+
+
+<div class="text-center mt-4">
+    <form class="row" id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <div class="btn-group" role="group" aria-label="Selection menu">
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Profile" asp-action="MyResidence"><i class="fa-solid fa-house-chimney"></i> Min Bostad</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link active" asp-controller="Profile" asp-action="MyFavourites"><i class="fa-solid fa-magnifying-glass"></i> Mina Bevakningar</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Profile" asp-action="Index"><i class="fa-solid fa-address-card"></i> Kontouppgifter</a>
+
+            <button id="logout" type="submit" class="col-1 btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Logga ut</button>
+        </div>
+    </form>
+</div>
+
+<div class="text-center mt-2 row">
+    <div class="btn-group" role="group" aria-label="Selection menu">
+        <a class="col-1 btn btn-outline-info clean-link" asp-controller="Profile" asp-action="MyFavourites"><i class="fa-solid fa-star"></i> Favoriter</a>
+
+        <a class="col-1 btn btn-outline-info clean-link" asp-controller="Profile" asp-action="MyPreferences"><i class="fa-solid fa-gear"></i> Sökpreferenser</a>
+
+        <a class="col-1 btn btn-outline-info clean-link" href="#"><i class="fa-solid fa-binoculars"></i> Bevakade områden</a>
+
+        <a class="col-1 btn btn-outline-info clean-link active" asp-controller="Profile" asp-action="MySearchHistory"><i class="fa-solid fa-magnifying-glass"></i> Sökhistorik</a>
+    </div>
+</div>
+
+@if (Model.Any())
+{
+    <div class="mt-4">
+        <div class="card p-2 bg-light">
+            <div class="row ">
+                @foreach (var item in Model)
+                {
+                    <div class="col-6">
+                        <div class="card my-1">
+                            <p class="card-header bg-primary text-white">Datum: @item.SearchTime.ToShortDateString()</p>
+                            <div class="row">
+                                <div class="col-5">
+                                    <p class="card-text p-1">Sök sträng: @item.SearchString</p>
+                                    <p class="card-text p-1">Minst antal rum: @item.MinRooms</p>
+                                    <p class="card-text p-1">Max Pris: @item.MaxPrice</p>
+                                    <p class="card-text p-1">Bo Area: @item.MinLivingArea</p>
+                                </div>
+                                <div class="col-5">
+                                    <p class="card-text p-1">Tomt Area: @item.PlotSize</p>
+                                    @if (item.NewConstruction == "-1")
+                                    {
+                                        <p class="card-text p-1">Nybyggnation: Alla</p>
+                                    }
+
+                                    @if (item.NewConstruction == "1")
+                                    {
+                                        <p class="card-text p-1">Nybyggnation: Enbart nyproduktion</p>
+                                    }
+
+                                    @if (item.NewConstruction == "0")
+                                    {
+                                        <p class="card-text p-1">Nybyggnation: Dölj nyproduktion</p>
+                                    }
+                                    @if (item.Balcony == "-1")
+                                    {
+                                        <p class="card-text p-1">Balkong: Alla</p>
+                                    }
+                                    @if (item.Balcony == "1")
+                                    {
+                                        <p class="card-text p-1">Balkong: Med balkong</p>
+                                    }
+                                    @if (item.Balcony == "0")
+                                    {
+                                        <p class="card-text p-1">Balkong: Utan balkong</p>
+                                    }
+
+                                </div>
+                            </div>
+                            <div class="m-1">
+                                @if (item.HouseCheckBox)
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-house" autocomplete="off" checked disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-house"><i class="fa-solid fa-house"></i> Villor</label>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-house" autocomplete="off" disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-house"><i class="fa-solid fa-house"></i> Villor</label>
+                                }
+                                @if (item.RowHouseCheckBox)
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-townhouse" autocomplete="off" checked disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-townhouse"><img src="~/images/resources/town-house-icon.png" /> Radhus</label>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-townhouse" autocomplete="off" disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-townhouse"><img src="~/images/resources/town-house-icon.png" /> Radhus</label>
+                                }
+                                @if (item.ApartmentCheckbox)
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-apt" autocomplete="off" checked disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-apt"><i class="fa-solid fa-building"></i> Lägenheter</label>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-apt" autocomplete="off" disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-apt"><i class="fa-solid fa-building"></i> Lägenheter</label>
+                                }
+                                @if (item.HolidayHomeCheckBox)
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-holhome" autocomplete="off" checked disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-holhome"><i class="fa-solid fa-caravan"></i> Fritidshus</label>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-holhome" autocomplete="off" disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-holhome"><i class="fa-solid fa-caravan"></i> Fritidshus</label>
+                                }
+                            </div>
+                            <div class="m-1">
+                                @if (item.LotCheckBox)
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-plot" autocomplete="off" checked disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-plot"><img src="~/images/resources/property-area-icon.png" /> Tomter</label>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-plot" autocomplete="off" disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-plot"><img src="~/images/resources/property-area-icon.png" /> Tomter</label>
+                                }
+                                @if (item.FarmCheckBox)
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-farmstead" autocomplete="off" checked disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-farmstead"><i class="fa-solid fa-tractor"></i> Gårdar/Skog</label>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-farmstead" autocomplete="off" disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-farmstead"><i class="fa-solid fa-tractor"></i> Gårdar/Skog</label>
+                                }
+                                @if (item.OtherCheckBox)
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-misc" autocomplete="off" checked disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-misc"><i class="fa-brands fa-square-font-awesome-stroke"></i> Övrigt</label>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="btn-check" id="btn-check-misc" autocomplete="off" disabled>
+                                    <label class="btn btn-outline-primary mr-2" for="btn-check-misc"><i class="fa-brands fa-square-font-awesome-stroke"></i> Övrigt</label>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h4 class="mt-4">Du har inte utfört några sökningar än</h4>
+}

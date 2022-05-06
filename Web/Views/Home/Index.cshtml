@@ -1,0 +1,180 @@
+﻿@using Core.Models
+@using Web.ViewModels
+@model RealEstateObjectViewModel
+
+@{
+    ViewData["Title"] = "Hem";
+
+    List<RealEstateObject> nrOfViews = ViewBag.MostViewdObjects;
+
+}
+
+<div class="text-center my-3 mt-5">
+    <img src="~/images/resources/stay_logo.png" style="height:7em;" alt="Stay logo" />
+</div>
+<label class="form-label"></label>
+<form asp-controller="Home" asp-action="SearchResult" class="row mb-5">
+    <div class="container border col-6 p-3 mx-auto">
+        <div class="border-1 mx-auto">
+            <div class="form-floating">
+                <input asp-for="SearchString" class="form-control" id="filterSearchAddress" placeholder="Område - Adress - Kommun" />
+                <label for="filterSearchAddress">Område - Adress - Kommun</label>
+            </div>
+        </div>
+
+        <div class="my-3">
+            Filtrera kategorier
+            <div>
+                @*<input type="checkbox" class="btn-check" id="btn-check-all" checked autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="btn-check-all">Alla kategorier</label>*@
+
+                <input asp-for="HouseCheckBox" type="checkbox" class="btn-check" id="btn-check-house" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-house"><i class="fa-solid fa-house"></i> Villor</label>
+
+                <input asp-for="RowHouseCheckBox" type="checkbox" class="btn-check" id="btn-check-townhouse" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-townhouse"><img src="~/images/resources/town-house-icon.png" /> Radhus</label>
+
+                <input asp-for="ApartmentCheckbox" type="checkbox" class="btn-check" id="btn-check-apt" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-apt"><i class="fa-solid fa-building"></i> Lägenheter</label>
+
+                <input asp-for="HolidayHomeCheckBox" type="checkbox" class="btn-check" id="btn-check-holhome" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-holhome"><i class="fa-solid fa-caravan"></i> Fritidshus</label>
+
+
+            </div>
+            <div class="my-2">
+                <input asp-for="LotCheckBox" type="checkbox" class="btn-check" id="btn-check-plot" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-plot"><img src="~/images/resources/property-area-icon.png" /> Tomter</label>
+
+                <input asp-for="FarmCheckBox" type="checkbox" class="btn-check" id="btn-check-farmstead" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-farmstead"><i class="fa-solid fa-tractor"></i> Gårdar/Skog</label>
+
+                <input asp-for="OtherCheckBox" type="checkbox" class="btn-check" id="btn-check-misc" autocomplete="off">
+                <label class="btn btn-outline-primary mr-2" for="btn-check-misc"><i class="fa-brands fa-square-font-awesome-stroke"></i> Övrigt</label>
+            </div>
+        </div>
+        <div class="my-3 row justify-content-between">
+            <div class="col mx-auto">
+                <label class="" for="minRoomsSelect">Antal rum</label>
+                <select asp-for="MinRooms" class="form-select" id="minRoomsSelect" aria-label="Number of rooms select">
+                    <option value="" selected>Alla</option>
+                    @for (var i = 1; i <= 10; i++)
+                    {
+                        <option value="@i">@i rum</option>
+                    }
+                    <option value="-1">>10 rum</option>
+                </select>
+            </div>
+            <div class="col mx-auto">
+                <label class="" for="livingAreaSelect">Boarea (m²)</label>
+                <select asp-for="MinLivingArea" class="form-select" id="livingAreaSelect" aria-label="Living area select">
+                    <option value="" selected>Alla</option>
+                    @for (var i = 20; i <= 200; i += 20)
+                    {
+                        <option value="@i">@i m²</option>
+                    }
+                    <option value="-1">>200 m²</option>
+                </select>
+            </div>
+            <div class="col mx-auto">
+                <label class="" for="propAreaSelect">Tomtarea (m²)</label>
+                <select asp-for="PlotSize" class="form-select" id="propAreaSelect" aria-label="Property area select">
+                    <option value="" selected>Alla</option>
+                    @for (var i = 50; i <= 250; i += 50)
+                    {
+                        <option value="@i">@i m²</option>
+                    }
+                    @for (var i = 300; i <= 1000; i += 100)
+                    {
+                        <option value="@i">@i m²</option>
+                    }
+                    <option value="-1">>1000 m²</option>
+                </select>
+            </div>
+        </div>
+        <div class="my-3 row justify-content-between">
+            <div class="col mx-auto">
+                <label class="" for="maxPriceSelect">Max pris</label>
+                <select asp-for="MaxPrice" class="form-select" id="maxPriceSelect" aria-label="Maximum price select">
+                    <option value="" selected>Inget</option>
+                    @for (var i = 100000; i < 500000; i += 100000)
+                    {
+                        <option value="@i">@i.ToString("N0") kr</option>
+                    }
+                    @for (var i = 500000; i <= 3000000; i += 500000)
+                    {
+                        <option value="@i">@i.ToString("N0") kr</option>
+                    }
+                    @for (var i = 3000000; i <= 10000000; i += 1000000)
+                    {
+                        <option value="@i">@i.ToString("N0") kr</option>
+                    }
+                </select>
+            </div>
+            <div class="col mx-auto">
+                <label class="" for="newProductionSelect">Nyproduktion</label>
+                <select asp-for="NewConstruction" class="form-select" id="newProductionSelect" aria-label="Show new production select">
+                    <option value="-1" selected>Alla</option>
+                    <option value="1">Enbart nyproduktion</option>
+                    <option value="0">Dölj Nyproduktion</option>
+                </select>
+            </div>
+            <div class="col mx-auto">
+                <label class="" for="balconySelect">Balkong</label>
+                <select asp-for="Balcony" class="form-select" id="balconySelect" aria-label="Balcony select">
+                    <option value="-1" selected>Alla</option>
+                    <option value="1">Visa enbart objekt med Balkong</option>
+                    <option value="0">Dölj objekt med Balkong</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-floating col-6 ps-0">
+            <textarea asp-for="DescriptionString" class="form-control" id="filterTextSearch" cols=40 rows=10 placeholder="Ex. Kakelugn, Fiber, etc"></textarea>
+            <label for="filterTextSearch">Ex. Kakelugn, Fiber, etc</label>
+        </div>
+
+        <button id="searchBtn" type="submit" class="btn btn-primary col-12 mt-3" title="Sök">Sök</button>
+    </div>
+</form>
+
+@*Bildspel*@
+
+<div id="featuredListings" class="carousel slide carousel-fade mt-5 mb-2 p-0" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#featuredListings" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#featuredListings" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#featuredListings" data-bs-slide-to="2"></button>
+    </div>
+
+    <div class="carousel-inner" style="margin-bottom: 100px">
+        @for (int i = 0; i < 3; i++)
+        {
+
+            string activeClass = i == 0 ? "active" : "";
+            string srcImage = $"~/images/Houses/Hus {i + 1}.jpg";
+            string hrefButton = $"/Home/RealEstateObject/{nrOfViews[i].Id}";
+
+            <div class="carousel-item p-0 @activeClass" id="homeCarousel">
+                <img src="@Url.Content(srcImage)" style="height:20em;width:100%;object-fit:cover;" />
+                <div class="carousel-caption text-start mb-4">
+                    <h3 class="text-light">@nrOfViews[i].Address</h3>
+                    <p>
+                        @nrOfViews[i].Description
+                    </p>
+                    <a href="@Url.Content(hrefButton)" class="btn btn-info">
+                        Besök objekt
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <button class="carousel-control-prev" role="button" data-bs-target="#featuredListings" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" role="button" data-bs-target="#featuredListings" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>

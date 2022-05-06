@@ -1,0 +1,73 @@
+@using Microsoft.AspNetCore.Identity;
+@using Core.Models;
+
+@model RealtorFirm
+
+@inject UserManager<User> userManager;
+
+@{
+    ViewData["Title"] = "Redigera mäklare - Mäklarfirma";
+    var bosses = await userManager.GetUsersInRoleAsync("Chef");
+    var realtors = await userManager.GetUsersInRoleAsync("Mäklare");
+    var employees = Model.Employees.ToList();
+    bool isSelected;
+}
+
+<form method="post">
+    <div class="card">
+        <div class="card-header">
+            <h2>Lägg till / ta bort mäklare från firma</h2>
+        </div>
+        <div class="card-body">
+            <i>
+                <strong>
+                    Kryssa i/ur mäklare för att lägga till/ta bort från firma
+                </strong>
+            </i>
+        </div>
+        <div class="card-body">
+            @for (int i = 0; i < realtors.Count; i++)
+            {
+                isSelected = employees.Contains(realtors[i]);
+
+                <div class="form-check m-1">
+                    <input type="hidden" asp-for="@Model.Id" />
+                    <input type="hidden" asp-for="@realtors[i].Id" name="userId" />
+                    <input class="form-check-input" type="checkbox" checked="@isSelected" name="isSelected" value="true" />
+                    <label class="form-check-label">
+                        @realtors[i].Email
+                    </label>
+                </div>
+            }
+        </div>
+
+        <div class="card-footer">
+            <input type="submit" value="Spara" class="btn btn-primary"
+                   style="width:auto" />
+            <a asp-action="EditRealtorsInFirm"
+               class="btn btn-primary" style="width:auto" asp->Tillbaka</a>
+        </div>
+    </div>
+</form>
+
+<p>Boss: </p>
+@foreach (var boss in bosses)
+{
+    if (Model.Employees.Contains(boss))
+    {
+        <div>
+            @boss.Email
+        </div>
+    }
+}
+
+<br />
+<br />
+
+<p>Employees: </p>
+@for (int i = 0; i < Model.Employees.Count; i++)
+{
+    <div>
+        @employees[i].Email
+    </div>
+}

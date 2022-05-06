@@ -1,0 +1,92 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Core.Models
+@inject SignInManager<User> SignInManager
+@model List<RealEstateObject>
+
+@{
+    ViewData["Title"] = "Favoriter";
+}
+
+<div class="text-center mt-4">
+    <form class="row" id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <div class="btn-group" role="group" aria-label="Selection menu">
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Profile" asp-action="MyResidence"><i class="fa-solid fa-house-chimney"></i> Min Bostad</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link active" asp-controller="Profile" asp-action="MyFavourites"><i class="fa-solid fa-magnifying-glass"></i> Mina Bevakningar</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Profile" asp-action="Index"><i class="fa-solid fa-address-card"></i> Kontouppgifter</a>
+
+            <button id="logout" type="submit" class="col-1 btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Logga ut</button>
+        </div>
+    </form>
+</div>
+
+<div class="text-center mt-2 row">
+    <div class="btn-group" role="group" aria-label="Selection menu">
+        <a class="col-1 btn btn-outline-info clean-link active" asp-controller="Profile" asp-action="MyFavourites"><i class="fa-solid fa-star"></i> Favoriter</a>
+
+        <a class="col-1 btn btn-outline-info clean-link" asp-controller="Profile" asp-action="MyPreferences"><i class="fa-solid fa-gear"></i> Sökpreferenser</a>
+
+        <a class="col-1 btn btn-outline-info clean-link" href="#"><i class="fa-solid fa-binoculars"></i> Bevakade områden</a>
+
+        <a class="col-1 btn btn-outline-info clean-link" asp-controller="Profile" asp-action="MySearchHistory"><i class="fa-solid fa-magnifying-glass"></i> Sökhistorik</a>
+    </div>
+</div>
+
+@if (Model.Any())
+{
+    <div class="mt-4">
+        @foreach (var item in Model)
+        {
+            <div class="card mb-3">
+
+                <div class="row g-0">
+                    <div class="col-4">
+                        <a asp-controller="Home" asp-action="RealEstateObject" asp-route-id="@item.Id" class="clean-link">
+                            @*<img src="@item.ImageURL" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" />*@
+                            <img src="~/images/resources/your_new_home.jpg" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" alt="picture">
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a asp-controller="Home" asp-action="RealEstateObject" asp-route-id="@item.Id" class="clean-link">
+                            <div class="card-body">
+                                <p class="card-text text-truncate col-11"><small class="text-muted">@item.Description</small></p>
+                                <h5 class="card-title mb-0">@item.Address</h5>
+                                <h6 class="card-title">@item.City</h6>
+                                <div class="d-flex justify-content-between pe-4">
+                                    <div class="card-text"><strong>@item.Price.ToString("n0") kr</strong></div>
+                                    <div class="card-text"><strong>@item.LivingArea.ToString("n0") m²</strong></div>
+                                    <div class="card-text"><strong>@item.NrOfRooms rum</strong></div>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <div class="row">
+                            <div class="col-12 p-1">
+                                @*<img src="@item.Realtor.Logo" />*@
+                                <img src="~/images/resources/stay_logo_140px.png" />
+                            </div>
+
+                            <div class="col-12 p-1 mt-3">
+                                <div class="text-end me-4">
+                                    <h2 class="m-0">
+                                        <a asp-controller="Home" asp-action="RemoveFromFavourites" asp-route-id="@item.Id" class="clean-link">
+                                            <i class="fa-solid fa-star" style="color: gold"></i>
+                                        </a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+}
+else
+{
+    <h4 class="mt-4">Du har inte markerat några favoriter än</h4>
+}

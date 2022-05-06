@@ -1,0 +1,29 @@
+﻿@using Web.ViewModels
+@model CreateRoleViewModel
+
+@{
+    ViewData["Title"] = "Skapa roll";
+}
+
+<h1 style="margin-top:25px;">@ViewData["Title"]</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group" style="margin-bottom:25px;">
+                <label asp-for="RoleName"></label>
+                <input asp-for="RoleName" class="form-control" />
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+            <a class="btn btn-primary" asp-controller="Admin" asp-action="ListRoles">Avbryt</a>
+            <button type="submit" class="btn btn-success">Skapa roll</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

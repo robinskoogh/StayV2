@@ -1,0 +1,63 @@
+﻿@using Web.ViewModels
+@model EditRoleViewModel
+
+@{
+    ViewData["Title"] = "Redigera roll";
+}
+
+<h1 class="mt-4">@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-4">
+        <form method="post" class="mt-2">
+            <div class="form-floating">
+                <input asp-for="Id" disabled class="form-control" placeholder="Id">
+                <label asp-for="Id">Id</label>
+            </div>
+            <div class="form-floating">
+                <input asp-for="RoleName" class="form-control" placeholder="RoleName">
+                <label asp-for="RoleName" class="">Role name</label>
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </form>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <a asp-action="ListRoles" class="btn btn-primary">Tillbaka</a>
+                <button type="submit" class="btn btn-success">Spara</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-1">
+    </div>
+    <div class="col-5">
+        <div class="card">
+        <div class="card-header">
+            <h3>Användare i roll</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.Users.Any())
+            {
+                foreach (var user in Model.Users)
+                {
+                    <h5 class="card-title">@user</h5>
+                }
+            }
+            else
+            {
+                <h5 class="card-title">Inga användare för tillfället..</h5>
+            }
+        </div>
+        <div class="card-footer">
+            <a asp-controller="Admin" asp-action="EditUsersInRole" asp-route-roleId="@Model.Id" class="btn btn-primary">
+                Lägg till / ta bort användare
+            </a>
+        </div>
+    </div>
+    </div>
+
+    
+
+</div>

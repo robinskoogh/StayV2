@@ -1,0 +1,227 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Core.Models
+@model RealEstateObject
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
+    ViewData["Title"] = Model.Address;
+
+    var hasBalcony = Model.Balcony ? "Ja" : "Nej";
+    var user = (User)ViewData["currentUser"];
+}
+
+<div class="border border-1 row p-2 my-3 mb-5">
+    <div class="row ms-0">
+        <div class="border border-1 col-4 p-2 mb-0 display-5">
+            @*<div class="d-flex justify-content-center">
+                <img src="@Model.Realtor.RealtorFirm.RealtorLogoPath" />
+                </div>*@
+            <div class="d-flex justify-content-center">
+                <img src="~/images/resources/stay_logo_140px.png" />
+            </div>
+        </div>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <div class="col">
+                <div class="float-end row text-end">
+                    <div class="display-6 m-0">
+                        @if (Model.UsersFavorited.FirstOrDefault(fav => fav.Id == user.Id) != null)
+                        {
+                            <a asp-action="RemoveFromFavourites" asp-route-id="@Model.Id" class="clean-link">
+                                <i class="fa-solid fa-star" style="color: gold"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-action="AddToFavourites" asp-route-id="@Model.Id" class="clean-link">
+                                <i class="fa-solid fa-star"></i>
+                            </a>
+                        }
+                    </div>
+                    @if (Model.UsersFavorited.FirstOrDefault(fav => fav.Id == user.Id) != null)
+                    {
+                        <div>Sparad</div>
+                    }
+                    else
+                    {
+                        <div>Spara</div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-7">
+        <div class="border border-1">
+            <div id="featuredListings" class="carousel slide carousel-fade mt-5 mb-2 p-0" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    @if (Model.Images.Count > 0)
+                    {
+                        for (var i = 0; i < Model.Images.Count; i++)
+                        {
+                            string activeClass = i == 0 ? "active" : "";
+                            <button type="button" data-bs-target="#featuredListings" data-bs-slide-to="@i" class="@activeClass"></button>
+                        }
+                    }
+                    else
+                    {
+                        for (var i = 0; i < 3; i++)
+                        {
+                            string activeClass = i == 0 ? "active" : "";
+                            <button type="button" data-bs-target="#featuredListings" data-bs-slide-to="@i" class="@activeClass"></button>
+                        }
+                    }
+                </div>
+
+                <div class="carousel-inner">
+                    @if (Model.Images.Count > 0)
+                    {
+                        for (var i = 0; i < Model.Images.Count; i++)
+                        {
+                            string activeClass = i == 0 ? "active" : "";
+                            string srcImage = $"~/images/Houses/{Model.Images[i].FileName}";
+
+                            <div class="carousel-item p-0 @activeClass" id="homeCarousel">
+                                <img src="@Url.Content(srcImage)" style="height:40vh;width:100%;object-fit:cover;" />
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+
+                            string activeClass = i == 0 ? "active" : "";
+                            string srcImage = $"~/images/Houses/Hus {i + 1}.jpg";
+
+                            <div class="carousel-item p-0 @activeClass" id="homeCarousel">
+                                <img src="@Url.Content(srcImage)" style="height:20em;width:100%;object-fit:cover;" />
+                            </div>
+                        }
+                    }
+                </div>
+
+                <button class="carousel-control-prev" role="button" data-bs-target="#featuredListings" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" role="button" data-bs-target="#featuredListings" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            @*kanske implementera ett bildspel här*@
+        </div>
+        <div class="mx-1 row">
+            <div class="mt-2 col-6" style="font-size:1.1em;">
+                <h5 class="mb-0">
+                    @Model.Address
+                </h5>
+            </div>
+            <div class="col-6 text-end mt-2">
+                <h5 class="mb-0">
+                    @Model.Price.ToString("n0") kr
+                </h5>
+            </div>
+            <div>
+                @Model.City
+            </div>
+        </div>
+        <div class="border border-1 p-2 my-3">
+            @Model.Description
+        </div>
+        <div class="border border-1 p-2 my-3">
+            <a href="#" class="clean-link">
+                <div class="col-9 mx-auto text-center my-1 p-1 border border-1" style="background:lightgray;">
+                    Visa hela beskrivningen
+                </div>
+            </a>
+
+            <a href="#" class="clean-link">
+                <div class="col-9 mx-auto text-center my-1 p-1 border border-1" style="background:lightgray;">
+                    Läs mer hos mäklaren
+                </div>
+            </a>
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                if (!user.InterestingListings.Contains(Model))
+                {
+                    <a class="clean-link" asp-controller="Home" asp-action="SubmitInterest" asp-route-id="@Model.Id">
+                        <div class="col-9 mx-auto text-center my-1 p-1 border border-1" style="background:lightgray;">
+                            Anmäl intresse
+                        </div>
+                    </a>
+                }
+                else
+                {
+                    <a class="clean-link" asp-controller="Home" asp-action="WithdrawInterest" asp-route-id="@Model.Id">
+                        <div class="col-9 mx-auto text-center my-1 p-1 border border-1" style="background:lightgray;">
+                            Avanmäl intresse
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="col-4 ms-4">
+        <div class="row">
+            <div class="col-6">
+                Bostadstyp
+                <div>
+                    <strong>@Model.PropType</strong>
+                </div>
+            </div>
+            <div class="col-6">
+                Upplåtelseform
+                <div>
+                    <strong>@Model.ContractType</strong>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4">
+            <div class="col-6">
+                Antal rum
+                <div>
+                    <strong>@Model.NrOfRooms rum</strong>
+                </div>
+            </div>
+            <div class="col-6">
+                Boarea
+                <div>
+                    <strong>@Model.LivingArea m²</strong>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4">
+            <div class="col-6">
+                Tomtarea
+                <div>
+                    <strong>@Model.GrossArea m²</strong>
+                </div>
+            </div>
+            <div class="col-6">
+                Byggår
+                <div>
+                    <strong>@Model.ConstructionYear</strong>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4">
+            <div class="col-6">
+                Balkong
+                <div>
+                    <strong>@hasBalcony</strong>
+                </div>
+            </div>
+            <div class="col-6">
+                Driftkostnad
+                <div>
+                    <strong>*Not implemented* kr/år</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

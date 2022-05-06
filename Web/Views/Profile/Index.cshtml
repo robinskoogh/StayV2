@@ -1,0 +1,95 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Core.Models
+@inject UserManager<User> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+@model RealtorRequest
+@{
+    ViewData["Title"] = "Min profil";
+    var user = await UserManager.GetUserAsync(User);
+    var userRoles = await UserManager.GetRolesAsync(user);
+}
+
+<div class="text-center mt-4">
+    <form class="row" id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <div class="btn-group" role="group" aria-label="Selection menu">
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Profile" asp-action="MyResidence"><i class="fa-solid fa-house-chimney"></i> Min Bostad</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Profile" asp-action="MyFavourites"><i class="fa-solid fa-magnifying-glass"></i> Mina Bevakningar</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link active" asp-controller="Profile" asp-action="Index"><i class="fa-solid fa-address-card"></i> Kontouppgifter</a>
+
+            <button id="logout" type="submit" class="col-1 btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Logga ut</button>
+        </div>
+    </form>
+</div>
+
+
+<div class="mt-4 mb-5">
+    <div class="col-3 mx-auto">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-3"></th>
+                    <th class="col-1"></th>
+                    <th class="col-8"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Namn</td>
+                    <td></td>
+                    <td>@user.FirstName @user.LastName</td>
+                </tr>
+                <tr>
+                    <td>Epost</td>
+                    <td></td>
+                    <td>@user.Email</td>
+                </tr>
+                <tr>
+                    <td>Adress</td>
+                    <td></td>
+                    <td>@user.Address<br />@user.ZipCode<br />@user.City</td>
+                </tr>
+                <tr>
+                    <td>Telefon</td>
+                    <td></td>
+                    <td>@user.PhoneNumber</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td></td>
+                    @foreach (var role in userRoles)
+                    {
+                        <td>
+                            @role
+                        </td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-4 row col-2 mx-auto g-1">
+        <a class="btn btn-info" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="fa-solid fa-gear"></i> Hantera konto</a>
+    </div>
+
+    @if (await UserManager.IsInRoleAsync(user, "Mäklare"))
+    {
+
+        <div class="mt-2 row col-2 mx-auto g-1">
+            <div class="btn btn-primary disabled">Verifierad mäklare</div>
+        </div>
+    }
+    else if (Model.UserRequests.Any(ur => ur.Id == user.Id))
+    {
+        <div class="mt-2 row col-2 mx-auto g-1">
+            <div class="btn btn-primary disabled">Ansökan skickad</div>
+        </div>
+    }
+    else
+    {
+        <div class="mt-2 row col-2 mx-auto g-1">
+            <a type="button" class="btn btn-primary" title="Ansök om att bli mäklare hos oss!" asp-controller="Admin" asp-action="CreateRealtorRequest">Ansök om mäklarstatus</a>
+        </div>
+    }
+</div>

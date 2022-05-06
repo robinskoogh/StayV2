@@ -1,0 +1,79 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@model IEnumerable<IdentityRole>
+
+@{
+    ViewData["Title"] = "Alla roller";
+}
+
+
+<div class="text-center mt-4">
+    <div class="row">
+        <div class="btn-group" role="group" aria-label="Selection menu">
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Admin" asp-action="Dashboard"><i class="fa-solid fa-gauge"></i> Översikt</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link active" asp-controller="Admin" asp-action="ListRoles"><i class="fa-solid fa-users"></i> Roller</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Admin" asp-action="ListRealtorRequests"><i class="fa-solid fa-clipboard-list"></i> Mäklaransökningar</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Admin" asp-action="RealtorFirms"><i class="fa-solid fa-clipboard-list"></i> Mäklarfirmor</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-3 mt-4">
+        @if (Model.Any())
+        {
+            <a class="btn btn-success mb-3" asp-action="CreateRole" asp-controller="Admin">Skapa roll</a>
+
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th class="col-7">Rollnamn</th>
+                        <th class="col-5 text-center">Hantera roll</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var role in Model)
+                    {
+                        <tr>
+                            <td>
+                                <h6 class="m-0">@role.Name</h6>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-sm btn-info" asp-controller="Admin" asp-action="EditRole" asp-route-id="@role.Id">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+
+                                <a class="btn btn-sm btn-danger" asp-controller="Admin" asp-action="DeleteRole" asp-route-id="@role.Id">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="card">
+                <div class="card-header">
+                    Inga roller skapade..
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Använd knappen nedan för att skapa ny roll.
+                    </h5>
+                    <a class="btn btn-success" style="width:auto" asp-controller="Admin" asp-action="CreateRole">
+                        Skapa roll
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+

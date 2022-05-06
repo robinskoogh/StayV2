@@ -1,0 +1,90 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Core.Models
+@model IEnumerable<RealEstateObject>
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
+    ViewData["Title"] = "Mina bostadsobjekt";
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<div class="text-center mt-4">
+    <div class="row">
+        <div class="btn-group" role="group" aria-label="Selection menu">
+            <a class="col-1 btn btn-outline-primary clean-link" href="#"><i class="fa-solid fa-gauge"></i> Översikt</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" href="#"><i class="fa-solid fa-briefcase"></i> Mäklarfirma</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link active" asp-controller="Realtor" asp-action="Index"><i class="fa-solid fa-house"></i> Bostadsobjekt</a>
+        </div>
+    </div>
+</div>
+
+<div class="border border-1 row p-2 my-3 mb-5 shadow mb-5">
+    <div class="ms-0 row">
+        <div class="mt-y my-2">
+
+            <p>
+                <a asp-action="Create" class="btn btn-success"><i class="fa-solid fa-plus"></i> Ladda upp bostadsobjekt</a>
+            </p>
+        </div>
+        @if (!user.UploadedRealEstateObjects.Any())
+        {
+            <div class="card-body">
+                Du har ej några upplagda bostäder.
+            </div>
+        }
+        <div>
+            @foreach (var item in user.UploadedRealEstateObjects)
+            {
+                <div class="row ms-0">
+                    <div class="card mb-3 col-9 p-0 jockeTransition">
+                        <div class="row g-0">
+                            <div class="col-4">
+                                @*<img src="@item.ImageURL" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" />*@
+                                @*<img src="~/images/resources/your_new_home.jpg" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" alt="picture">*@
+
+                                @if (item.Images.Count > 0)
+                                {
+                                    <a asp-action="RealEstateObject" asp-route-id="@item.Id" class="clean-link">
+                                        @*<img src="@item.ImageURL" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" />*@
+                                        <img src="~/images/Houses/@item.Images[0].FileName" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" alt="picture">
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-action="RealEstateObject" asp-route-id="@item.Id" class="clean-link">
+                                        @*<img src="@item.ImageURL" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" />*@
+                                        <img src="~/images/resources/your_new_home.jpg" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" alt="picture">
+                                    </a>
+                                }
+                            </div>
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="stretched-link clean-link">
+                                        <p class="card-text text-truncate col-11"><small class="text-muted">@item.Description</small></p>
+                                        <h5 class="card-title mb-0">@item.Address</h5>
+                                        <h6 class="card-title">@item.City</h6>
+                                        <div class="d-flex justify-content-between pe-4">
+                                            <div class="card-text"><strong>@item.Price.ToString("n0") kr</strong></div>
+                                            <div class="card-text"><strong>@item.LivingArea.ToString("n0") m²</strong></div>
+                                            <div class="card-text"><strong>@item.NrOfRooms rum</strong></div>
+
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <a class="col-12 my-1 btn btn-primary" asp-controller="Realtor" asp-action="InterestedUsers" asp-route-id="@item.Id"><i class="fa-solid fa-clipboard-check"></i> Intresseanmälningar</a>
+                        <a class="col-12 my-1 btn btn-info" asp-controller="Realtor" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i> Redigera</a>
+                        <a class="col-12 my-1 btn btn-warning" href="#"><i class="fa-solid fa-message"></i> Meddelandecenter</a>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>

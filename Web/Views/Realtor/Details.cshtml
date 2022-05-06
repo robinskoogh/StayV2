@@ -1,0 +1,126 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Core.Models
+@model RealEstateObject
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
+    ViewData["Title"] = $"Detaljer - {Model.Address}";
+}
+
+<div class="text-center mt-4">
+    <div class="row">
+        <div class="btn-group" role="group" aria-label="Selection menu">
+            <a class="col-1 btn btn-outline-primary clean-link active" asp-controller="Realtor" asp-action="Details" asp-route-id="@Model.Id"><i class="fa-solid fa-circle-info"></i> Detaljer</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Realtor" asp-action="Edit" asp-route-id="@Model.Id"><i class="fa-solid fa-pen-to-square"></i> Redigera</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Realtor" asp-action="InterestedUsers" asp-route-id="@Model.Id"><i class="fa-solid fa-clipboard-check"></i> Intresseanmälningar</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" href="#"><i class="fa-solid fa-message"></i> Meddelandecenter</a>
+
+            <a class="col-1 btn btn-warning clean-link" asp-controller="Realtor" asp-action="Index"><i class="fa-solid fa-angles-left"></i> Tillbaka</a>
+
+        </div>
+    </div>
+</div>
+
+
+
+@{
+    ViewData["Title"] = "Privacy Policy";
+
+    var hasBalcony = Model.Balcony ? "Ja" : "Nej";
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<div class="border border-1 row p-2 my-3 mb-5">
+    <div class="row ms-0">
+        <h5 class="border border-1 col-4 p-2 mb-0 display-5">
+            Realtor goes here
+        </h5>
+    </div>
+    <div class="col-7">
+        <div class="border border-1">
+            <img src="~/images/resources/your_new_home.jpg" style="height:40vh;width:100%;object-fit:cover;" class="p-2" />
+            @*kanske implementera ett bildspel här*@
+        </div>
+        <div class="mx-1 row">
+            <div class="mt-2 col-6" style="font-size:1.1em;">
+                <h5 class="mb-0">
+                    @Model.Address
+                </h5>
+            </div>
+            <div class="col-6 text-end mt-2">
+                <h5 class="mb-0">
+                    @Model.Price.ToString("n0") kr
+                </h5>
+            </div>
+            <div>
+                @Model.City
+            </div>
+        </div>
+        <div class="border border-1 p-2 my-3">
+            @Model.Description
+        </div>
+    </div>
+
+    <div class="col-4 ms-4">
+        <div class="row">
+            <div class="col-6">
+                Bostadstyp
+                <div>
+                    <strong>@Model.PropType</strong>
+                </div>
+            </div>
+            <div class="col-6">
+                Upplåtelseform
+                <div>
+                    <strong>@Model.ContractType</strong>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4">
+            <div class="col-6">
+                Antal rum
+                <div>
+                    <strong>@Model.NrOfRooms rum</strong>
+                </div>
+            </div>
+            <div class="col-6">
+                Boarea
+                <div>
+                    <strong>@Model.LivingArea m²</strong>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4">
+            <div class="col-6">
+                Tomtarea
+                <div>
+                    <strong>@Model.GrossArea m²</strong>
+                </div>
+            </div>
+            <div class="col-6">
+                Byggår
+                <div>
+                    <strong>@Model.ConstructionYear</strong>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4">
+            <div class="col-6">
+                Balkong
+                <div>
+                    <strong>@hasBalcony</strong>
+                </div>
+            </div>
+            <div class="col-6">
+                Driftkostnad
+                <div>
+                    <strong>*Not implemented* kr/år</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

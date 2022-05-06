@@ -1,0 +1,84 @@
+﻿@using Core.Models
+@model IEnumerable<RealtorFirm>
+
+@{
+    ViewData["Title"] = "Mäklarfirmor - Admin";
+}
+
+<div class="text-center mt-4">
+    <div class="row">
+        <div class="btn-group" role="group" aria-label="Selection menu">
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Admin" asp-action="Dashboard"><i class="fa-solid fa-gauge"></i> Översikt</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Admin" asp-action="ListRoles"><i class="fa-solid fa-users"></i> Roller</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Admin" asp-action="ListRealtorRequests"><i class="fa-solid fa-clipboard-list"></i> Mäklaransökningar</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link active" asp-controller="Admin" asp-action="RealtorFirms"><i class="fa-solid fa-clipboard-list"></i> Mäklarfirmor</a>
+        </div>
+    </div>
+</div>
+
+<div class="border border-1 row p-2 my-3 mb-5 shadow mb-5">
+    <div class="ms-0 row">
+        <div class="mt-y my-2">
+
+            <p>
+                <a asp-controller="RealtorFirms" asp-action="Create" class="btn btn-success"><i class="fa-solid fa-plus"></i> Skapa ny mäklarfirma</a>
+            </p>
+        </div>
+        @if (!Model.Any())
+        {
+            <div class="card-body">
+                Det finns ej några aktiva mäklarfirmor..
+            </div>
+        }
+        <div>
+            @foreach (var item in Model)
+            {
+                <div class="row ms-0">
+                    <div class="card mb-3 col-9 p-0 jockeTransition">
+                        <div class="row g-0">
+                            <div class="col-4">
+                                @*<img src="@item.ImageURL" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" />*@
+                                @*<img src="~/images/resources/your_new_home.jpg" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" alt="picture">*@
+
+                                @if (item.RealtorLogoPath.Any())
+                                {
+                                    <a asp-action="RealEstateObject" asp-route-id="@item.Id" class="clean-link">
+                                        @*<img src="@item.ImageURL" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" />*@
+                                        <img src="~/images/FirmLogos/@item.RealtorLogoPath" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" alt="picture">
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-action="RealEstateObject" asp-route-id="@item.Id" class="clean-link">
+                                        @*<img src="@item.ImageURL" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" />*@
+                                        <img src="~/images/resources/stay_logo.png" class="img-fluid rounded-start" style="height:10em;width:100%;object-fit:cover;" alt="picture">
+                                    </a>
+                                }
+                            </div>
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <a asp-controller="RealtorFirms" asp-action="EditRealtorsInFirm" asp-route-id="@item.Id" class="stretched-link clean-link">
+                                        <p class="card-text text-truncate col-11"><small class="text-muted">@item.PhoneNumber</small></p>
+                                        <h5 class="card-title mb-0">@item.Name</h5>
+                                        <h6 class="card-title">@item.Email</h6>
+                                        <div class="d-flex justify-content-between pe-4">
+                                            <div class="card-text"><strong>@item.WebsiteURL</strong></div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <a class="col-12 my-1 btn btn-info" asp-controller="RealtorFirms" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i> Redigera</a>
+                        <a class="col-12 my-1 btn btn-warning" href="#"><i class="fa-solid fa-message"></i> Meddelandecenter</a>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>

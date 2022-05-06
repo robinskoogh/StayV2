@@ -1,0 +1,32 @@
+﻿@page
+@model ExternalLoginModel
+@{
+    ViewData["Title"] = "Registrera konto";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-4 border border-2" style="margin-top: 5%; border:1px solid #446e9b; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; padding: 4%;">
+        <div class="col offset-2">
+            <h2 id="external-login-title">Koppla ditt @Model.ProviderDisplayName-konto.</h2>
+        </div>
+        <hr />
+
+        <p id="external-login-description" class="text-info">
+            Du har nu autentiserat dig via <strong>@Model.ProviderDisplayName</strong>.
+            Var vänlig fyll i din mailadress nedan och klicka på "Registrera" för att logga in.
+        </p>
+        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating">
+                <input asp-for="Input.Email" class="form-control" autocomplete="email" />
+                <label asp-for="Input.Email" class="form-label"></label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <button type="submit" class="my-2 w-100 btn btn-lg btn-primary">Registrera</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    }

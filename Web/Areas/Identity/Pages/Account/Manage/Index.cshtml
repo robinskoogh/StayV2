@@ -1,0 +1,60 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profil";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="profile-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating mb-2">
+                <input asp-for="Username" id="username" class="form-control" placeholder="Användarnamn" disabled />
+                <label for="username">Användarnamn</label>
+            </div>
+            <div class="form-floating my-2">
+                <input asp-for="Input.FirstName" id="firstname" class="form-control" placeholder="Förnamn" />
+                <label for="firstname" >Förnamn</label>
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-floating my-2">
+                <input asp-for="Input.LastName" id="lastname" class="form-control" placeholder="Efternamn" />
+                <label for="lastname" >Efternamn</label>
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-floating my-2">
+                <input asp-for="Input.Address" id="address" class="form-control" placeholder="Adress" />
+                <label for="address" >Adress</label>
+                <span asp-validation-for="Input.Address" class="text-danger"></span>
+            </div>
+            <div class="form-floating my-2">
+                <input asp-for="Input.ZipCode" id="zipcode" class="form-control" placeholder="Postnummer" />
+                <label for="zipcode" >Postnummer</label>
+                <span asp-validation-for="Input.ZipCode" class="text-danger"></span>
+            </div>
+            <div class="form-floating my-2">
+                <input asp-for="Input.City" id="city" class="form-control" placeholder="Stad" />
+                <label for="city" >Stad</label>
+                <span asp-validation-for="Input.City" class="text-danger"></span>
+            </div>
+            <div class="form-floating my-2">
+                <input asp-for="Input.DateOfBirth" id="dateofbirth" class="form-control" placeholder="Födelsedatum" />
+                <label for="dateofbirth" >Födelsedatum</label>
+                <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-floating my-2">
+                <input asp-for="Input.PhoneNumber" id="phonenumber" class="form-control" placeholder="Telefonnummer" />
+                <label for="phonenumber" >Telefonnummer</label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Spara</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

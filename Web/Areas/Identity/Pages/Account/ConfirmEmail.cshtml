@@ -1,0 +1,18 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Verifiera konto";
+}
+
+<div class="row" style="justify-content:center;">
+    <div class="col-md-4 border border-2" style="margin-top: 5%; border:1px solid #446e9b; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; padding: 4%;">
+        <div class="col offset-1">
+            <h1>@ViewData["Title"]</h1>
+        </div>
+        <hr />
+            <partial name="_StatusMessage" model="Model.StatusMessage" />
+        <div class="col offset-1" style="width: auto;">
+            <h5>Du kan nu logga in via menyn.</h5>
+        </div>
+    </div>
+</div>

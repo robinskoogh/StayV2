@@ -1,0 +1,200 @@
+﻿@using Core.Models
+@using Microsoft.AspNetCore.Identity
+@using Core.Models.Enums
+
+@inject UserManager<User> UserManager
+
+@model RealEstateObject
+
+@{
+    ViewData["Title"] = $"Redigera bostadsobjekt - {Model.Address}";
+    var realtor = await UserManager.GetUserAsync(User);
+}
+
+<style>
+    .form-floating {
+        margin-bottom: 2%;
+    }
+</style>
+
+<div class="text-center mt-4">
+    <div class="row">
+        <div class="btn-group" role="group" aria-label="Selection menu">
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Realtor" asp-action="Details" asp-route-id="@Model.Id"><i class="fa-solid fa-circle-info"></i> Detaljer</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link active" asp-controller="Realtor" asp-action="Edit" asp-route-id="@Model.Id"><i class="fa-solid fa-pen-to-square"></i> Redigera</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Realtor" asp-action="InterestedUsers" asp-route-id="@Model.Id"><i class="fa-solid fa-clipboard-check"></i> Intresseanmälningar</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" href="#"><i class="fa-solid fa-message"></i> Meddelandecenter</a>
+
+            <a class="col-1 btn btn-warning clean-link" asp-controller="Realtor" asp-action="Index"><i class="fa-solid fa-angles-left"></i> Tillbaka</a>
+
+        </div>
+    </div>
+</div>
+
+<form asp-action="Edit" style="margin-top: 5%;">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="border border-1 row p-2 my-3 mb-5" style="border:1px solid #446e9b; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+        <h1 style="margin-top: 1%;">@ViewData["Title"]</h1>
+        <hr />
+        <div class="row ms-0">
+            <h4 style="margin-top: 1%; color:darkgrey;">@realtor.FirstName @realtor.LastName</h4>
+            <h5 class="border border-0 col-4 p-2 mb-0 display-5">
+                @Model.Address
+            </h5>
+            <div class="col">
+                <div class="float-end row text-end" style="margin-top: -3%;">
+                    <div class="display-6 m-0">
+                        <a href="#" class="clean-link">
+                            <i class="fa-solid fa-star"></i>
+                        </a>
+                    </div>
+                    <div>Spara</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-7">
+            <div class="border border-1">
+                <img src="~/images/resources/your_new_home.jpg" style="height:40vh;width:100%;object-fit:cover;" class="p-2" /> @*kanske implementera ett bildspel här*@
+            </div>
+            <div class="mx-1 row">
+                <div class="mt-2 col-6" style="font-size:1.1em;">
+                    <div class="form-floating">
+                        <input asp-for="Address" class="form-control" placeholder="Adress" />
+                        <label asp-for="Address" class="control-label"></label>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating">
+                        <input asp-for="ZipCode" class="form-control" placeholder="Postnummer" />
+                        <label asp-for="ZipCode" class="control-label"></label>
+                        <span asp-validation-for="ZipCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-6 text-end mt-2">
+                    <div class="form-floating">
+                        <input asp-for="Price" class="form-control" placeholder="Pris (kr)" />
+                        <label asp-for="Price" class="control-label">Pris (kr)</label>
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating">
+                        <input asp-for="City" class="form-control" placeholder="Stad" />
+                        <label asp-for="City" class="control-label"></label>
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="form-floating mx-1 row mt-2">
+                <textarea rows="4" asp-for="Description" class="form-control" placeholder="Beskrivning" style="height: 200%;"></textarea>
+                <label asp-for="Description" class="control-label"></label>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-4 ms-4">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-floating">
+                        <select asp-for="PropType" class="form-control" asp-items="Html.GetEnumSelectList<PropertyType>()">
+                            <option>Välj bostadstyp..</option>
+                        </select>
+                        <label asp-for="PropType" class="control-label"></label>
+                        <span asp-validation-for="PropType" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-floating">
+                        <select asp-for="ContractType" class="form-control" asp-items="Html.GetEnumSelectList<ContractType>()">
+                            <option>Välj upplåtelseform..</option>
+                        </select>
+                        <label asp-for="ContractType" class="control-label"></label>
+                        <span asp-validation-for="ContractType" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-4">
+                <div class="col-6">
+                    <div class="form-floating">
+                        <input asp-for="NrOfRooms" class="form-control" placeholder="Antal rum" />
+                        <label asp-for="NrOfRooms" class="control-label"></label>
+                        <span asp-validation-for="NrOfRooms" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-floating">
+                        <input asp-for="LivingArea" class="form-control" placeholder="Boarea" />
+                        <label asp-for="LivingArea" class="control-label"></label>
+                        <span asp-validation-for="LivingArea" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-4">
+                <div class="col-6">
+                    <div class="form-floating">
+                        <input asp-for="PlotSize" class="form-control" placeholder="Tomtarea" />
+                        <label asp-for="PlotSize" class="control-label"></label>
+                        <span asp-validation-for="PlotSize" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-floating">
+                        <input asp-for="ConstructionYear" class="form-control" placeholder="Byggår" />
+                        <label asp-for="ConstructionYear" class="control-label"></label>
+                        <span asp-validation-for="ConstructionYear" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-4">
+                <div class="col-6">
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Balcony" /> @Html.DisplayNameFor(model => model.Balcony)
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    Driftkostnad
+                    <div>
+                        <strong>*Not implemented* kr/år</strong>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="mt-2 col-6" style="width: auto;">
+                <div class="form-floating" style="margin-top: 4%;">
+                    <input asp-for="GrossArea" class="form-control" placeholder="Biarea" />
+                    <label asp-for="GrossArea" class="control-label"></label>
+                    <span asp-validation-for="GrossArea" class="text-danger"></span>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="DateForViewing" class="form-control" placeholder="Visningsdatum" />
+                    <label asp-for="DateForViewing" class="control-label"></label>
+                    <span asp-validation-for="DateForViewing" class="text-danger"></span>
+                </div>
+                <div class="form-floating">
+                    <input disabled asp-for="DateUploaded" class="form-control" placeholder="Uppladdningsdatum" />
+                    <label asp-for="DateUploaded" class="control-label"></label>
+                    <span asp-validation-for="DateUploaded" class="text-danger"></span>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="Images" class="form-control" style="padding-top: 12%; height: auto;" />
+                    <label asp-for="Images" class="control-label"></label>
+                    <span asp-validation-for="Images" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="margin:2%;">
+            <a class="btn btn-primary" asp-action="Index"><i class="fa-solid fa-arrow-left"></i> Tillbaka</a>
+            <button type="submit" class="btn btn-success" style="margin-left: 52.5%;"><i class="fa-solid fa-plus"></i> Spara</button>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger" style="margin-left: 15%;"><i class="fa-solid fa-trash-can"></i> Ta bort</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

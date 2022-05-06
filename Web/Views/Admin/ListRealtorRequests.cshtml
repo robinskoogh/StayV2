@@ -1,0 +1,60 @@
+﻿@using Web.ViewModels
+@model List<RealtorRequestViewModel>
+
+@{
+    ViewData["Title"] = "Mäklaransökningar";
+}
+
+
+<div class="text-center mt-4">
+    <div class="row">
+        <div class="btn-group" role="group" aria-label="Selection menu">
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Admin" asp-action="Dashboard"><i class="fa-solid fa-gauge"></i> Översikt</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Admin" asp-action="ListRoles"><i class="fa-solid fa-users"></i> Roller</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link active" asp-controller="Admin" asp-action="ListRealtorRequests"><i class="fa-solid fa-clipboard-list"></i> Mäklaransökningar</a>
+
+            <a class="col-1 btn btn-outline-primary clean-link" asp-controller="Admin" asp-action="RealtorFirms"><i class="fa-solid fa-clipboard-list"></i> Mäklarfirmor</a>
+        </div>
+    </div>
+</div>
+
+<form method="post" class="mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>Mäklaransökningar</h2>
+        </div>
+        <div class="card-body">
+            <i>
+                <strong>
+                    Kryssa i/ur användare för att acceptera/neka från roll
+                </strong>
+            </i>
+        </div>
+        <div class="card-body">
+            @if (Model != null)
+            {
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <div class="form-check m-1">
+                        <input type="hidden" asp-for="@Model[i].UserId" />
+                        <input type="hidden" asp-for="@Model[i].UserName" />
+                        <input asp-for="@Model[i].IsSelected" class="form-check-input" />
+                        <label class="form-check-label" asp-for="@Model[i].">
+                            @Model[i].UserName
+                        </label>
+                    </div>
+                }
+            }
+            @if (Model != null && !Model.Any())
+            {
+                <i>Det finns för tillfället inga ansökningar..</i>
+            }
+        </div>
+        <div class="card-footer">
+            <input type="submit" value="Spara" class="btn btn-success" style="width:auto" asp-action="EditRealtorRequests" />
+            <a class="btn btn-primary" style="width:auto" asp-controller="Admin" asp-action="ListRoles">Tillbaka</a>
+        </div>
+    </div>
+</form>

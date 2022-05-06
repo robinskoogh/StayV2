@@ -1,0 +1,143 @@
+﻿@using Core.Models
+@using Core.Models.Enums;
+@model RealEstateObject
+
+@{
+    ViewData["Title"] = "Ladda upp bostadsobjekt";
+}
+
+<style>
+    .form-floating {
+        margin-bottom: 5%;
+    }
+</style>
+
+<div class="row mb-5" style="width: auto; margin-left: 1%; margin-top: 5%;">
+    <div class="col border border-1 me-5 mb-5 p-0 row" style="border:1px solid #446e9b; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+        <div class="mt-5 my-2">
+            <h1 style="margin-top: -2%;">@ViewData["Title"]</h1>
+            <h4 style="color: darkgrey">Nytt bostadsobjekt</h4>
+            <hr />
+            <form enctype="multipart/form-data" asp-action="Create">
+                <div class="row" style="justify-content: center;">
+                    <div class="col-md-4">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="col offset-4" style="width: auto;">
+                            <h5>Område</h5>
+                        </div>
+                        <hr />
+                        <div class="form-floating">
+                            <input asp-for="Address" class="form-control" placeholder="Adress" />
+                            <label asp-for="Address" class="control-label"></label>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <input asp-for="ZipCode" class="form-control" placeholder="Postnummer" />
+                            <label asp-for="ZipCode" class="control-label"></label>
+                            <span asp-validation-for="ZipCode" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <input asp-for="City" class="form-control" placeholder="Stad" />
+                            <label asp-for="City" class="control-label"></label>
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+                        <div class="col offset-4" style="width: auto;">
+                            <h5>Övrigt</h5>
+                        </div>
+                        <hr />
+                        <div class="form-floating">
+                            <textarea rows="5" asp-for="Description" class="form-control" placeholder="Beskrivning" style="height: 125%;"></textarea>
+                            <label asp-for="Description" class="control-label"></label>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <input asp-for="DateForViewing" class="form-control" placeholder="Visningsdatum" />
+                            <label asp-for="DateForViewing" class="control-label"></label>
+                            <span asp-validation-for="DateForViewing" class="text-danger"></span>
+                        </div>
+                        @*<div class="form-floating">
+                            <input asp-for="DateUploaded" class="form-control" placeholder="Uppladdningsdatum" />
+                            <label asp-for="DateUploaded" class="control-label"></label>
+                            <span asp-validation-for="DateUploaded" class="text-danger"></span>
+                            <div style="margin-top: 3%; margin-bottom: 7.5%; margin-left: 10%;">
+                            (Lämna fältet tomt för dagens datum)
+                            </div>
+                            </div>
+                            <br />*@
+                        <div class="form-floating">
+                            <input name="inputImages" type="file" class="form-control" placeholder="Bilder" style="padding-top: 9%; height: auto;" multiple />
+                            <label asp-for="Images" class="control-label"></label>
+                            <span asp-validation-for="Images" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col offset-2" style="width: auto;">
+                            <h5>Tekniska specifikationer</h5>
+                        </div>
+                        <hr />
+                        <div class="form-floating">
+                            <input asp-for="NrOfRooms" class="form-control" placeholder="Antal rum" />
+                            <label asp-for="NrOfRooms" class="control-label"></label>
+                            <span asp-validation-for="NrOfRooms" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <input asp-for="LivingArea" class="form-control" placeholder="Boarea" />
+                            <label asp-for="LivingArea" class="control-label"></label>
+                            <span asp-validation-for="LivingArea" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <input asp-for="GrossArea" class="form-control" placeholder="Biarea" />
+                            <label asp-for="GrossArea" class="control-label"></label>
+                            <span asp-validation-for="GrossArea" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <input asp-for="PlotSize" class="form-control" placeholder="Tomtarea" />
+                            <label asp-for="PlotSize" class="control-label"></label>
+                            <span asp-validation-for="PlotSize" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <input asp-for="Price" class="form-control" placeholder="Pris" />
+                            <label asp-for="Price" class="control-label"></label>
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <select asp-for="ContractType" class="form-control" asp-items="Html.GetEnumSelectList<ContractType>()">
+                                <option>Välj upplåtelseform..</option>
+                            </select>
+                            <label asp-for="ContractType" class="control-label"></label>
+                            <span asp-validation-for="ContractType" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <select asp-for="PropType" class="form-control" asp-items="Html.GetEnumSelectList<PropertyType>()">
+                                <option>Välj bostadstyp..</option>
+                            </select>
+                            <label asp-for="PropType" class="control-label"></label>
+                            <span asp-validation-for="PropType" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <input asp-for="ConstructionYear" class="form-control" placeholder="Byggår" />
+                            <label asp-for="ConstructionYear" class="control-label"></label>
+                            <span asp-validation-for="ConstructionYear" class="text-danger"></span>
+                        </div>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="Balcony" /> @Html.DisplayNameFor(model => model.Balcony)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group offset-4" style="padding: 2%;">
+                    <a asp-action="Index" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Tillbaka</a> |
+                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-plus"></i> Skapa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
