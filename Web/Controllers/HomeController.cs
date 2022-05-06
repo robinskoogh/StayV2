@@ -234,7 +234,6 @@ namespace Web.Controllers
             _dbContext.SaveChanges();
         }
 
-
         public IActionResult Privacy()
         {
             return View();
